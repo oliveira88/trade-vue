@@ -38,12 +38,25 @@ export default defineComponent({
       <img src="@/assets/trade-app-logo.jpg" class="w-100">
     </v-list-item>
     <v-divider></v-divider>
-    <v-list-item v-for="(item, i) in items" :to="item.to" :key="i" :title="item.title" :prepend-icon="item.icon"></v-list-item>
+    <v-list-item
+      v-for="(item, i) in items"
+      :to="item.to"
+      :key="i"
+      :title="item.title"
+      :prepend-icon="item.icon"
+    >
+    </v-list-item>
   </v-navigation-drawer>
-  <v-app-bar
-    color="white"
-  >
-    <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+
+  <v-app-bar color="white">
+    <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" :icon="drawer ? 'mdi-menu-open' : 'mdi-menu'">
+    </v-app-bar-nav-icon>
+    <v-spacer></v-spacer>
+    <v-btn
+      append-icon="mdi-logout-variant"
+    >
+      Sair
+    </v-btn>
   </v-app-bar>
 </template>
 
