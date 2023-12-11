@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <v-alert :value="alert"> {{ mensagem }} </v-alert>
     <h2 class="mb-8">Cadastrar Empresa</h2>
 
     <form @submit.prevent="submit">
@@ -33,6 +34,9 @@
 <script>
 // import CurrencyInput from '@/components/CurrencyInput.vue'
 
+import {empresasRef} from "@/firebase";
+import {push} from "firebase/database";
+
 export default {
   // components: {CurrencyInput},
   data() {
@@ -42,11 +46,25 @@ export default {
         qtdAcoes: 0,
         valorUnitario: 0
       },
+      mensagem: '',
+      alert: false
     }
   },
   methods: {
     submit() {
       console.log(this.empresa);
+      push(empresasRef, this.empresa);
+      alert('Empresa cadastrada com sucesso!');
+      // this.alert = true;
+      this.empresa = {
+        nome: '',
+        qtdAcoes: 0,
+        valorUnitario: 0
+      };
+      // const clear = setTimeout(() => {
+      //   this.alert = false;
+      //   clearTimeout(clear);
+      // }, 3000);
     }
   }
 }

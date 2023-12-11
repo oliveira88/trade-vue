@@ -1,10 +1,12 @@
 export interface ExampleStateInterface {
-  prop: boolean;
+  dinheiroDisponivel: number;
+  totalInvestido: number;
 }
 
 function state(): ExampleStateInterface {
   return {
-    prop: false
+    dinheiroDisponivel: 0,
+    totalInvestido: 0,
   }
 }
 

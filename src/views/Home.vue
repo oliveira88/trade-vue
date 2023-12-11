@@ -1,7 +1,8 @@
 <template>
-  <HelloWorld />
+  <DrawerAside />
+  <RouterView />
 </template>
 
 <script lang="ts" setup>
-  import HelloWorld from '@/components/HelloWorld.vue'
+  import DrawerAside from "@/components/Aside.vue";
 </script>
