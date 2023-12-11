@@ -19,9 +19,9 @@ export default defineComponent({
 
 <template>
   <v-dialog>
-    <template v-slot:activator="{ props }">
+    <!-- <template v-slot:activator="{ props }">
       <button type="button" v-bind="props" class="btn" ref="btn" >Cadastrar empresa</button>
-    </template>
+    </template> -->
 
     <template v-slot:default="{ isActive }">
       <v-card title="Cadastro de empresa">

@@ -12,9 +12,11 @@ import App from './App.vue'
 
 // Composables
 import { createApp } from 'vue'
+import filters from './helpers/filters'
 
 const app = createApp(App)
 
 registerPlugins(app)
 
 app.mount('#app')
+app.config.globalProperties.$filters = filters;

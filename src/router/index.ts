@@ -14,6 +14,26 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: () => import('@/views/Home.vue'),
       },
+      {
+        path: 'comprar-acoes',
+        name: 'comprar-acoes',
+        component: () => import('@/views/ComprarAcoes.vue'),
+      },
+      {
+        path: 'minhas-acoes',
+        name: 'minhas-acoes',
+        component: () => import('@/views/MinhasAcoes.vue'),
+      },
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        component: () => import('@/views/Dashboard.vue'),
+      },
+      {
+        path: 'cadastrar-empresa',
+        name: 'cadastrar-empresa',
+        component: () => import('@/views/CadastrarEmpresa.vue'),
+      },
     ],
   },
 ]
