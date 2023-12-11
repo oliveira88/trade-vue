@@ -1,4 +1,3 @@
-import { store } from 'quasar/wrappers'
 import { InjectionKey } from 'vue'
 import { Router } from 'vue-router'
 import {
@@ -43,19 +42,19 @@ export const storeKey: InjectionKey<VuexStore<StateInterface>> = Symbol('vuex-ke
    }
  }
 
-export default store(function (/* { ssrContext } */) {
-  const Store = createStore<StateInterface>({
-    modules: {
-      // example
-    },
-
-    // enable strict mode (adds overhead!)
-    // for dev mode and --debug builds only
-    strict: !!process.env.DEBUGGING
-  })
-
-  return Store;
-})
+// export default store(function (/* { ssrContext } */) {
+//   const Store = createStore<StateInterface>({
+//     modules: {
+//       // example
+//     },
+//
+//     // enable strict mode (adds overhead!)
+//     // for dev mode and --debug builds only
+//     strict: !!process.env.DEBUGGING
+//   })
+//
+//   return Store;
+// })
 
 export function useStore() {
   return vuexUseStore(storeKey)
