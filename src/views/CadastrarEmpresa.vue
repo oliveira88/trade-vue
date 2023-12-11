@@ -14,11 +14,6 @@
         label="Quantidade de ações"
       ></v-text-field>
 
-      <v-text-field
-        v-model="empresa.valorUnitario"
-        label="Preço unitário"
-      ></v-text-field>
-
       <currency-input v-model="empresa.valorUnitario" label="Preço Unitário" />
 
       <div class="d-flex justify-end">
