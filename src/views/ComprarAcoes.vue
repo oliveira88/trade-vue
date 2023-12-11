@@ -28,18 +28,33 @@
           <td>{{ empresa.qtdAcoes }}</td>
           <td>{{ $filters.formatCurrency(empresa.valorUnitario) }}</td>
           <td>
-            <v-btn prepend-icon="mdi-cart-variant" color="#468a19" :disabled="empresa.qtdAcoes === 0">
+            <v-btn
+              prepend-icon="mdi-cart-variant"
+              color="#468a19"
+              :disabled="empresa.qtdAcoes === 0"
+              @click="abrirModalCompra(empresa)"
+            >
               Comprar
             </v-btn>
           </td>
         </tr>
       </tbody>
     </v-table>
+
+    <compra-dialog
+      :dialog="dialog"
+      :empresa="empresaSelecionada"
+      @confirmar-compra="realizarCompra"
+      @cancel="fecharModal"
+    />
   </v-container>
 </template>
 
 <script>
+import CompraDialog from './CompraDialog.vue';
+
 export default {
+  components: {CompraDialog},
   data() {
     return {
       empresas: [
@@ -58,8 +73,25 @@ export default {
           qtdAcoes: 0,
           valorUnitario: 80
         }
-      ]
+      ],
+      dialog: false,
+      empresaSelecionada: null
     }
+  },
+  methods: {
+    abrirModalCompra(empresa) {
+      this.empresaSelecionada = empresa;
+      this.dialog = true;
+    },
+    fecharModal() {
+      this.empresaSelecionada = null;
+      this.dialog = false;
+    },
+    realizarCompra({ empresa, quantidadeCompra }) {
+      empresa.qtdAcoes -= quantidadeCompra;
+
+      this.fecharModal();
+    },
   }
 }
 </script>
