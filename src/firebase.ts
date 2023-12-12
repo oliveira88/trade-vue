@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getDatabase, ref } from 'firebase/database'
+import { getFirestore, collection } from 'firebase/firestore'
 
 export const firebaseApp = initializeApp({
   apiKey: "AIzaSyDzfCePDh37CeaJ3VFax-AfvLSwCyvd-J8",
@@ -11,7 +11,8 @@ export const firebaseApp = initializeApp({
   appId: "1:467024671519:web:30e369ce6c7ec7cd8c362a"
 })
 
-const db = getDatabase(firebaseApp)
-export const usuariosRef = ref(db, 'usuarios')
-export const empresasRef = ref(db, 'empresas')
-export const acoesCompradasRef = ref(db, 'acoesCompradas')
+const db = getFirestore(firebaseApp)
+
+export const usuariosRef = collection(db, 'usuarios')
+export const empresasRef = collection(db, 'empresas')
+export const acoesCompradasRef = collection(db, 'acoesCompradas')

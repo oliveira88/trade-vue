@@ -7,8 +7,8 @@ import {
 } from 'vuex'
 import actions from "@/store/actions";
 import getters from "@/store/getters";
-import mutations from "@/store/mutations";
 import state from "@/store/state";
+import mutation from "@/store/mutations";
 // provide typings for `this.$store`
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -25,10 +25,10 @@ export const storeKey: InjectionKey<VuexStore<StateInterface>> = Symbol('vuex-ke
  }
 
 export const store = createStore<StateInterface>({
+  mutations: mutation,
   actions,
   state,
   getters,
-  mutations
 })
 
 

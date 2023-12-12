@@ -40,11 +40,11 @@
 
 <script>
 import {empresasRef} from "@/firebase";
-import {useDatabaseList} from "vuefire";
+import {useCollection, useDatabaseList} from "vuefire";
 
 export default {
   async mounted() {
-    const {data: empresas, promise: empresasPromise} = useDatabaseList(empresasRef);
+    const {data: empresas, promise: empresasPromise} = useCollection(empresasRef);
     await empresasPromise.value;
     this.empresas = empresas;
     console.log({empresas});
