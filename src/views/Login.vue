@@ -1,6 +1,6 @@
 <script lang="ts">
 import { useDatabaseList } from 'vuefire'
-import {push} from 'firebase/database'
+import {push, query} from 'firebase/database'
 import {defineComponent} from 'vue'
 import {usuariosRef} from "@/firebase";
 
@@ -19,14 +19,15 @@ export default defineComponent({
     };
   },
   methods: {
-    login() {
+    async login() {
       console.log(this.cpf, this.senha);
-      // const users = useDatabaseList(usuariosRef);
-      // console.log({value});
-      // const numberList = users.value.map((user) => user.cpf);
-      //
-      // console.log({numberList});
-      this.$router.push('/');
+      const {data: users, promise: usersPromise} = useDatabaseList(usuariosRef);
+      await usersPromise.value;
+      const usuario = users.value.find((user) => user.cpf === this.cpf && user.senha === this.senha);
+      if(usuario) {
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+        this.$router.push('/');
+      }
     },
   },
 })
