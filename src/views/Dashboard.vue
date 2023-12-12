@@ -25,17 +25,23 @@
             <v-icon icon="mdi-check" size="x-large" color="white"></v-icon>
           </template>
       </v-card>
-
+      {{dinheiroDisponivel}}
+      {{totalInvestido}}
     </div>
   </v-container>
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   data() {
     return {
 
     }
+  },
+  computed: {
+    ...mapGetters(['dinheiroDisponivel', 'totalInvestido'])
   }
 }
 </script>

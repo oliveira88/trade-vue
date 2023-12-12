@@ -52,28 +52,14 @@
 
 <script>
 import CompraDialog from './CompraDialog.vue';
+import { empresasRef } from "@/firebase";
+import { useDatabaseList } from "vuefire";
 
 export default {
   components: {CompraDialog},
   data() {
     return {
-      empresas: [
-        {
-          nome: 'Empresa Teste',
-          qtdAcoes: 1000,
-          valorUnitario: 20
-        },
-        {
-          nome: 'Empresa 2',
-          qtdAcoes: 2000,
-          valorUnitario: 80
-        },
-        {
-          nome: 'Empresa 3',
-          qtdAcoes: 0,
-          valorUnitario: 80
-        }
-      ],
+      empresas: [],
       dialog: false,
       empresaSelecionada: null
     }
@@ -92,7 +78,12 @@ export default {
 
       this.fecharModal();
     },
-  }
+  },
+  async mounted() {
+    const {data: empresas, promise: empresasPromise} = useDatabaseList(empresasRef);
+    await empresasPromise.value;
+    this.empresas = empresas;
+  },
 }
 </script>
 
