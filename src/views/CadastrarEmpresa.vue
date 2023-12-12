@@ -29,8 +29,9 @@
 <script>
 import CurrencyInput from '@/components/CurrencyInput.vue'
 
-import {empresasRef} from "@/firebase";
+import {empresasRef, usuariosRef} from "@/firebase";
 import {push} from "firebase/database";
+import {doc, setDoc} from "firebase/firestore";
 
 export default {
   components: {CurrencyInput},
@@ -49,7 +50,7 @@ export default {
     submit() {
       this.empresa.valorUnitario = Number(this.empresa.valorUnitario.replace(/[^\d.,-]/g, '').replace(',', '.'));
       console.log(this.empresa);
-      push(empresasRef, this.empresa);
+      setDoc(doc(empresasRef, "empresa"), this.empresa);
       alert('Empresa cadastrada com sucesso!');
       // this.alert = true;
       this.empresa = {

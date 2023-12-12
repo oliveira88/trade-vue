@@ -17,7 +17,7 @@
       <v-card
           class="mx-auto"
           width="300"
-          title="R$ 1000,00"
+          :title="totalInvestidoString"
           subtitle="Total investido"
           color="#468abb"
         >
@@ -27,6 +27,8 @@
       </v-card>
       {{dinheiroDisponivel}}
       {{totalInvestido}}
+
+      {{usuario}}
     </div>
   </v-container>
 </template>
@@ -35,14 +37,29 @@
 import {mapGetters} from "vuex";
 
 export default {
+  mounted() {
+    const usuario = localStorage.getItem('usuario');
+    if (usuario) {
+      this.dinheiroDisponivel = JSON.parse(usuario).valorAcoes;
+      // this.totalInvestido = JSON.parse(usuario).;
+    }
+  },
   data() {
     return {
-
+      totalInvestido: 0,
+      dinheiroDisponivel: 0,
     }
   },
   computed: {
-    ...mapGetters(['dinheiroDisponivel', 'totalInvestido'])
+    // ...mapGetters(['dinheiroDisponivel', 'totalInvestido']),
+    totalInvestidoString() {
+      return `R$ ${this.totalInvestido},00`
+    },
+    usuario() {
+      return JSON.parse(localStorage.getItem('usuario'));
+    }
   }
+
 }
 </script>
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import { usuariosRef } from '@/firebase';
-import { push } from 'firebase/database'
+import { setDoc, doc } from 'firebase/firestore'
 export default defineComponent({
   name: "Cadastro",
   data() {
@@ -21,8 +21,8 @@ export default defineComponent({
         senha: this.senha,
         valorAcoes: this.valorAcoes,
       };
-      localStorage.setItem('usuario', JSON.stringify(usuario));
-      push(usuariosRef, usuario);
+      setDoc(doc(usuariosRef, "usuario"), usuario);
+      alert('Usuário cadastrado com sucesso!')
       this.$router.push('/login');
     },
   },
@@ -34,7 +34,7 @@ export default defineComponent({
     <img src="@/assets/trade-app-logo.jpg" class="logo" alt="Logo">
   </div>
   <v-divider></v-divider>
-  <div class="d-flex align-center justify-center" style="height: 100vh">
+  <div class="d-flex align-center justify-center cadastro-container">
     <v-sheet width="400" class="mx-auto">
       <h2 class="mb-8">Cadastro</h2>
       <v-form fast-fail @submit.prevent="cadastrar">
@@ -59,8 +59,11 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
   }
-
   .logo {
-    width: 10%;
+    height: 64px;
+  }
+
+  .cadastro-container {
+    height: calc(100vh - 65px);
   }
 </style>

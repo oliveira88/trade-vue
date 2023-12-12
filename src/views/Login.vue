@@ -1,6 +1,5 @@
 <script lang="ts">
-import { useDatabaseList } from 'vuefire'
-import {push, query} from 'firebase/database'
+import {useCollection} from 'vuefire'
 import {defineComponent} from 'vue'
 import {usuariosRef} from "@/firebase";
 
@@ -9,24 +8,24 @@ export default defineComponent({
   mounted() {
     const usuario = localStorage.getItem('usuario');
     if (usuario) {
-      this.$router.push('/home');
+      this.$router.push('/dashboard');
     }
   },
   data() {
     return {
       cpf: "",
       senha: "",
-    };
+    }
   },
   methods: {
     async login() {
       console.log(this.cpf, this.senha);
-      const {data: users, promise: usersPromise} = useDatabaseList(usuariosRef);
+      const {data: users, promise: usersPromise } = useCollection(usuariosRef);
       await usersPromise.value;
       const usuario = users.value.find((user) => user.cpf === this.cpf && user.senha === this.senha);
       if(usuario) {
         localStorage.setItem('usuario', JSON.stringify(usuario));
-        this.$router.push('/');
+        this.$router.push({name: 'dashboard'});
       }
     },
   },
@@ -38,14 +37,14 @@ export default defineComponent({
       <img src="@/assets/trade-app-logo.jpg" class="logo" alt="Logo">
     </div>
     <v-divider></v-divider>
-    <div class="d-flex align-center justify-center" style="height: 100vh">
+    <div class="d-flex align-center justify-center login-container">
       <v-sheet width="400" class="mx-auto">
         <h2 class="mb-8">Login</h2>
-        <v-form fast-fail @submit.prevent="login">
+        <v-form fast-fail>
           <v-text-field v-model="cpf" label="CPF"></v-text-field>
-          <v-text-field v-model="senha" label="Senha"></v-text-field>
+          <v-text-field v-model="senha" label="Senha" @keyup.enter="login"></v-text-field>
 
-          <v-btn type="submit" color="primary" block class="mt-2">Login</v-btn>
+          <v-btn type="button" color="primary" block class="mt-2" @click="login">Login</v-btn>
 
         </v-form>
         <div class="mt-2">
@@ -63,6 +62,10 @@ export default defineComponent({
   }
 
   .logo {
-    width: 10%;
+    height: 64px;
+  }
+
+  .login-container {
+    height: calc(100vh - 65px);
   }
 </style>

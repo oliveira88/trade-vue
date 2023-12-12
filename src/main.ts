@@ -12,7 +12,7 @@ import App from './App.vue'
 // Composables
 import { createApp } from 'vue'
 import filters from './helpers/filters'
-import { VueFire, VueFireDatabaseOptionsAPI } from "vuefire";
+import {VueFire, VueFireDatabaseOptionsAPI, VueFireFirestoreOptionsAPI} from "vuefire";
 import { firebaseApp } from "@/firebase";
 import { store, storeKey } from './store'
 const app = createApp(App)
@@ -22,6 +22,7 @@ app.use(VueFire, {
   firebaseApp,
   modules: [
     VueFireDatabaseOptionsAPI(),
+    VueFireFirestoreOptionsAPI(),
   ],
 })
 app.use(store, storeKey)
