@@ -25,10 +25,6 @@
             <v-icon icon="mdi-check" size="x-large" color="white"></v-icon>
           </template>
       </v-card>
-      {{dinheiroDisponivel}}
-      {{totalInvestido}}
-
-      {{usuario}}
     </div>
   </v-container>
 </template>

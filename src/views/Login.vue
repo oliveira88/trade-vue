@@ -1,7 +1,8 @@
 <script lang="ts">
 import {useCollection} from 'vuefire'
 import {defineComponent} from 'vue'
-import {usuariosRef} from "@/firebase";
+import {empresasRef, usuariosRef} from "@/firebase";
+import {onSnapshot} from "firebase/firestore";
 
 export default defineComponent({
   name: "Login",
@@ -20,13 +21,16 @@ export default defineComponent({
   methods: {
     async login() {
       console.log(this.cpf, this.senha);
-      const {data: users, promise: usersPromise } = useCollection(usuariosRef);
-      await usersPromise.value;
-      const usuario = users.value.find((user) => user.cpf === this.cpf && user.senha === this.senha);
-      if(usuario) {
-        localStorage.setItem('usuario', JSON.stringify(usuario));
-        this.$router.push({name: 'dashboard'});
-      }
+      onSnapshot(usuariosRef, (snapshot) => {
+        const users = snapshot.docs.map((doc) => {
+          return {id: doc.id, ...doc.data()}
+        });
+        const usuario = users.find((user) => user.cpf === this.cpf && user.senha === this.senha);
+        if(usuario) {
+          localStorage.setItem('usuario', JSON.stringify(usuario));
+          this.$router.push({name: 'dashboard'});
+        }
+      });
     },
   },
 })
