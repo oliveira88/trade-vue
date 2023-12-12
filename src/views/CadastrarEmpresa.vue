@@ -34,9 +34,8 @@
 <script>
 // import CurrencyInput from '@/components/CurrencyInput.vue'
 
-import {empresasRef, usuariosRef} from "@/firebase";
-import {push} from "firebase/database";
-import {doc, setDoc} from "firebase/firestore";
+import {empresasRef} from "@/firebase";
+import {addDoc} from "firebase/firestore";
 
 export default {
   // components: {CurrencyInput},
@@ -54,18 +53,16 @@ export default {
   methods: {
     submit() {
       console.log(this.empresa);
-      setDoc(doc(empresasRef, "empresa"), this.empresa);
-      alert('Empresa cadastrada com sucesso!');
-      // this.alert = true;
-      this.empresa = {
-        nome: '',
-        qtdAcoes: 0,
-        valorUnitario: 0
-      };
-      // const clear = setTimeout(() => {
-      //   this.alert = false;
-      //   clearTimeout(clear);
-      // }, 3000);
+      addDoc(empresasRef, this.empresa).then(() => {
+        alert('Empresa cadastrada com sucesso!');
+        this.empresa = {
+          nome: '',
+          qtdAcoes: 0,
+          valorUnitario: 0
+        };
+      }).catch(() => {
+        alert('Ocorreu um erro ao cadastrar a empresa!');
+      });
     }
   }
 }

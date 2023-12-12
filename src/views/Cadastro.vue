@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import { usuariosRef } from '@/firebase';
-import { setDoc, doc } from 'firebase/firestore'
+import { addDoc } from 'firebase/firestore'
 export default defineComponent({
   name: "Cadastro",
   data() {
@@ -21,9 +21,12 @@ export default defineComponent({
         senha: this.senha,
         valorAcoes: this.valorAcoes,
       };
-      setDoc(doc(usuariosRef, "usuario"), usuario);
-      alert('Usuário cadastrado com sucesso!')
-      this.$router.push('/login');
+      addDoc(usuariosRef, usuario).then(() => {
+        alert('Usuário cadastrado com sucesso!')
+        this.$router.push('/login');
+      }).catch((error) => {
+        alert('Ocorreu um erro ao cadastrar o usuário!')
+      });
     },
   },
 })

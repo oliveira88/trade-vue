@@ -40,7 +40,7 @@
 
 <script>
 import {empresasRef} from "@/firebase";
-import {useCollection, useDatabaseList} from "vuefire";
+import {useCollection} from "vuefire";
 
 export default {
   async mounted() {
