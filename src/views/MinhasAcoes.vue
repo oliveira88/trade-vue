@@ -28,7 +28,7 @@
           <td>{{ acao.qtdComprada }}</td>
           <td>{{ $filters.formatCurrency(acao.qtdComprada * acao.empresa.valorUnitario) }}</td>
           <td>
-            <v-btn prepend-icon="mdi-currency-usd" color="#0e7eb5">
+            <v-btn prepend-icon="mdi-currency-usd" color="#0e7eb5" @click="abrirModalVenda(acao)">
               Vender
             </v-btn>
           </td>
@@ -40,19 +40,28 @@
           <td>{{ acoesTotais }}</td>
           <td>{{ $filters.formatCurrency(valorTotalAdquirido) }}</td>
           <td>
-
           </td>
         </tr>
       </tfoot>
     </v-table>
+
+    <venda-dialog
+      :dialog="dialog"
+      :acao-selecionada="acaoSelecionada"
+      @confirmar-venda="realizarVenda"
+      @cancel="fecharModal"
+    />
+
   </v-container>
 </template>
 
 <script>
 import {useCollection} from "vuefire";
 import {acoesCompradasRef} from "@/firebase";
+import VendaDialog from './VendaDialog.vue';
 
 export default {
+  components: {VendaDialog},
   async mounted() {
     console.log(this.cpf, this.senha);
     const {data: acoesCompradas, promise: acoesCompradasPromise } = useCollection(acoesCompradasRef);
@@ -78,7 +87,9 @@ export default {
           },
           qtdComprada: 100
         }
-      ]
+      ],
+      dialog: false,
+      acaoSelecionada: null,
     }
   },
   computed: {
@@ -91,6 +102,21 @@ export default {
         0
       );
     }
+  },
+  methods: {
+    abrirModalVenda(acao) {
+      this.acaoSelecionada = acao;
+      this.dialog = true;
+    },
+    fecharModal() {
+      this.acaoSelecionada = null;
+      this.dialog = false;
+    },
+    realizarVenda({ acaoSelecionada, quantidadeVenda }) {
+      acaoSelecionada.qtdComprada -= quantidadeVenda;
+
+      this.fecharModal();
+    },
   }
 }
 </script>

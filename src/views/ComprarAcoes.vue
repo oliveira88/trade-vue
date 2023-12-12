@@ -28,13 +28,25 @@
           <td>{{ empresa.qtdAcoes }}</td>
           <td>{{ $filters.formatCurrency(empresa.valorUnitario) }}</td>
           <td>
-            <v-btn prepend-icon="mdi-cart-variant" color="#468a19" :disabled="empresa.qtdAcoes === 0">
+            <v-btn
+              prepend-icon="mdi-cart-variant"
+              color="#468a19"
+              :disabled="empresa.qtdAcoes === 0"
+              @click="abrirModalCompra(empresa)"
+            >
               Comprar
             </v-btn>
           </td>
         </tr>
       </tbody>
     </v-table>
+
+    <compra-dialog
+      :dialog="dialog"
+      :empresa="empresaSelecionada"
+      @confirmar-compra="realizarCompra"
+      @cancel="fecharModal"
+    />
   </v-container>
 </template>
 
@@ -42,8 +54,10 @@
 import {empresasRef} from "@/firebase";
 import {useCollection} from "vuefire";
 import {addDoc, updateDoc} from "firebase/firestore";
+import CompraDialog from './CompraDialog.vue';
 
 export default {
+  components: {CompraDialog},
   async mounted() {
     const {data: empresas, promise: empresasPromise} = useCollection(empresasRef);
     await empresasPromise.value;
@@ -65,11 +79,27 @@ export default {
         this.empresa = {
           nome: '',
           qtdAcoes: 0,
-          valorUnitario: 0
-        };
-      });
-      console.log({empresa});
+          valorUnitario: 80
+        }
+      ],
+      dialog: false,
+      empresaSelecionada: null
     }
+  },
+  methods: {
+    abrirModalCompra(empresa) {
+      this.empresaSelecionada = empresa;
+      this.dialog = true;
+    },
+    fecharModal() {
+      this.empresaSelecionada = null;
+      this.dialog = false;
+    },
+    realizarCompra({ empresa, quantidadeCompra }) {
+      empresa.qtdAcoes -= quantidadeCompra;
+
+      this.fecharModal();
+    },
   }
 }
 </script>

@@ -15,12 +15,7 @@
         label="Quantidade de ações"
       ></v-text-field>
 
-      <v-text-field
-        v-model="empresa.valorUnitario"
-        label="Preço unitário"
-      ></v-text-field>
-
-      <!-- <currency-input v-model="empresa.valorUnitario" label="Preço Unitário" /> -->
+      <currency-input v-model="empresa.valorUnitario" label="Preço Unitário" />
 
       <div class="d-flex justify-end">
         <v-btn color="#468a19" type="submit">
@@ -32,13 +27,13 @@
 </template>
 
 <script>
-// import CurrencyInput from '@/components/CurrencyInput.vue'
+import CurrencyInput from '@/components/CurrencyInput.vue'
 
 import {empresasRef} from "@/firebase";
 import {addDoc} from "firebase/firestore";
 
 export default {
-  // components: {CurrencyInput},
+  components: {CurrencyInput},
   data() {
     return {
       empresa: {
@@ -52,6 +47,7 @@ export default {
   },
   methods: {
     submit() {
+      this.empresa.valorUnitario = Number(this.empresa.valorUnitario.replace(/[^\d.,-]/g, '').replace(',', '.'));
       console.log(this.empresa);
       addDoc(empresasRef, this.empresa).then(() => {
         alert('Empresa cadastrada com sucesso!');
