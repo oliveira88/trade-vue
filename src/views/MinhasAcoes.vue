@@ -49,7 +49,16 @@
 </template>
 
 <script>
+import {useCollection} from "vuefire";
+import {acoesCompradasRef} from "@/firebase";
+
 export default {
+  async mounted() {
+    console.log(this.cpf, this.senha);
+    const {data: acoesCompradas, promise: acoesCompradasPromise } = useCollection(acoesCompradasRef);
+    await acoesCompradasPromise.value;
+    this.acoes = acoesCompradas;
+  },
   data() {
     return {
       acoes: [

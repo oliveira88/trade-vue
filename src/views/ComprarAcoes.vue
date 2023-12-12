@@ -41,12 +41,14 @@
 <script>
 import {empresasRef} from "@/firebase";
 import {useCollection} from "vuefire";
+import {addDoc, updateDoc} from "firebase/firestore";
 
 export default {
   async mounted() {
     const {data: empresas, promise: empresasPromise} = useCollection(empresasRef);
     await empresasPromise.value;
     this.empresas = empresas;
+
     console.log({empresas});
   },
   data() {
@@ -54,6 +56,21 @@ export default {
       empresas: []
     }
   },
+  methods: {
+    async comprarAcao(empresa) {
+      const empresaAtualizar = this.empresa.find((e) => e.id === empresa.id);
+      empresaAtualizar.qtdAcoes;
+      updateDoc(empresasRef, this.empresa).then(() => {
+        alert('Ação comprada com sucesso!');
+        this.empresa = {
+          nome: '',
+          qtdAcoes: 0,
+          valorUnitario: 0
+        };
+      });
+      console.log({empresa});
+    }
+  }
 }
 </script>
 
