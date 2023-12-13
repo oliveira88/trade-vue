@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <v-alert :value="alert"> {{ mensagem }} </v-alert>
     <h2 class="mb-8">Cadastrar Empresa</h2>
 
     <form @submit.prevent="submit">
@@ -28,6 +29,9 @@
 <script>
 import CurrencyInput from '@/components/CurrencyInput.vue'
 
+import {empresasRef} from "@/firebase";
+import {addDoc} from "firebase/firestore";
+
 export default {
   components: {CurrencyInput},
   data() {
@@ -37,12 +41,24 @@ export default {
         qtdAcoes: 0,
         valorUnitario: 0
       },
+      mensagem: '',
+      alert: false
     }
   },
   methods: {
     submit() {
       this.empresa.valorUnitario = Number(this.empresa.valorUnitario.replace(/[^\d.,-]/g, '').replace(',', '.'));
       console.log(this.empresa);
+      addDoc(empresasRef, this.empresa).then(() => {
+        alert('Empresa cadastrada com sucesso!');
+        this.empresa = {
+          nome: '',
+          qtdAcoes: 0,
+          valorUnitario: 0
+        };
+      }).catch(() => {
+        alert('Ocorreu um erro ao cadastrar a empresa!');
+      });
     }
   }
 }

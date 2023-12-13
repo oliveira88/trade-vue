@@ -51,34 +51,32 @@
 </template>
 
 <script>
+import {acoesCompradasRef, empresasRef, usuariosRef} from "@/firebase";
+import {useCollection} from "vuefire";
+import {addDoc, updateDoc, doc, onSnapshot} from "firebase/firestore";
 import CompraDialog from './CompraDialog.vue';
 
 export default {
   components: {CompraDialog},
+  mounted() {
+    this.obterEmpresas();
+  },
   data() {
     return {
-      empresas: [
-        {
-          nome: 'Empresa Teste',
-          qtdAcoes: 1000,
-          valorUnitario: 20
-        },
-        {
-          nome: 'Empresa 2',
-          qtdAcoes: 2000,
-          valorUnitario: 80
-        },
-        {
-          nome: 'Empresa 3',
-          qtdAcoes: 0,
-          valorUnitario: 80
-        }
-      ],
+      empresas: [],
       dialog: false,
       empresaSelecionada: null
     }
   },
   methods: {
+    obterEmpresas() {
+      onSnapshot(empresasRef, (snapshot) => {
+        this.empresas = snapshot.docs.map((doc) => {
+          return {id: doc.id, ...doc.data()}
+        });
+      });
+
+    },
     abrirModalCompra(empresa) {
       this.empresaSelecionada = empresa;
       this.dialog = true;
@@ -88,8 +86,38 @@ export default {
       this.dialog = false;
     },
     realizarCompra({ empresa, quantidadeCompra }) {
-      empresa.qtdAcoes -= quantidadeCompra;
+      const empresaAtualizar = this.empresas.find((e) => e.id === empresa.id);
+      empresaAtualizar.qtdAcoes -= quantidadeCompra;
+      const precoARemoverUsuario = empresaAtualizar.valorUnitario * quantidadeCompra;
+      let usuario = JSON.parse(localStorage.getItem('usuario'));
+      usuario = { ...usuario, valorAcoes: usuario.valorAcoes - precoARemoverUsuario}
 
+
+      updateDoc(doc(empresasRef, empresaAtualizar.id), empresaAtualizar).then(() => {
+          alert('Empresa debitada com sucesso!');
+          this.obterEmpresas();
+      }).catch(() => {
+          alert('Ocorreu um erro ao debitar a empresa!');
+      });
+
+      addDoc(acoesCompradasRef, {
+        empresaId: empresaAtualizar.id,
+        usuarioId: usuario.id,
+        quantidade: quantidadeCompra,
+      }).then(() => {
+        alert('Ação comprada com sucesso!');
+        this.obterEmpresas();
+      }).catch(() => {
+        alert('Ocorreu um erro ao comprar a ação!');
+      });
+
+      debugger;
+      updateDoc(doc(usuariosRef, usuario.id), usuario).then(() => {
+        alert('Saldo atualizado com sucesso!');
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+      }).catch(() => {
+        alert('Ocorreu um erro ao atualizar o saldo!');
+      });
       this.fecharModal();
     },
   }

@@ -3,8 +3,11 @@ import { StateInterface } from './index';
 import { ExampleStateInterface } from './state';
 
 const actions: ActionTree<ExampleStateInterface, StateInterface> = {
-  someAction (/* context */) {
-    // your code
+  obterUsuario ({ commit }, payload) {
+    commit('obterUsuario', payload);
+  },
+  comprarAcao ({ commit }, payload) {
+    commit('comprarAcao', payload);
   }
 };
 

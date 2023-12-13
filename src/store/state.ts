@@ -1,10 +1,23 @@
 export interface ExampleStateInterface {
-  prop: boolean;
+  dinheiroDisponivel: number;
+  totalInvestido: number;
+  usuario: {
+    nome: string;
+    cpf: string;
+    dinheiroDisponivel: number;
+    totalInvestido: number;
+  };
+  empresas: Array<{
+    nome: string;
+    qtdAcoes: number;
+    valorUnitario: number;
+  }>;
 }
 
 function state(): ExampleStateInterface {
   return {
-    prop: false
+    usuario: {},
+    empresas: [],
   }
 }
 

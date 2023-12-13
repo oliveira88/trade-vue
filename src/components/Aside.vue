@@ -1,16 +1,10 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import CadastroEmpresa from "@/components/CadastroEmpresa.vue";
-import cadastroEmpresa from "@/components/CadastroEmpresa.vue";
 
 
 export default defineComponent({
   name: "DrawerAside",
-  computed: {
-    cadastroEmpresa() {
-      return cadastroEmpresa
-    }
-  },
   components: {CadastroEmpresa},
   data() {
     return {
@@ -26,6 +20,10 @@ export default defineComponent({
   methods: {
     abrirModalCadastro() {
       this.$refs.modal.abrirModalCadastro();
+    },
+    logout() {
+      localStorage.removeItem('usuario');
+      this.$router.push('/login');
     }
   }
 })
@@ -54,6 +52,7 @@ export default defineComponent({
     <v-spacer></v-spacer>
     <v-btn
       append-icon="mdi-logout-variant"
+      @click="logout"
     >
       Sair
     </v-btn>
